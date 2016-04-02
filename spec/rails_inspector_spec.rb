@@ -16,6 +16,7 @@ describe RailsInspector do
     let(:subject) { inspector }
     let(:basenames) { files.map(&:basename).map(&:to_s) }
     let(:classnames) { files.map(&:class_name) }
+    let(:specfiles) { files.map(&:spec_file) }
     let(:files) { double }
     
     it { is_expected.to respond_to(:root) }
@@ -52,6 +53,10 @@ describe RailsInspector do
         it "can tell us its class name" do
           expect(classnames).to include("User")
         end
+        it "can tell us its spec_file" do
+          spec_file = Pathname.new("spec/dummy/spec/models/user_spec.rb").expand_path
+          expect(specfiles).to include(spec_file)
+        end
       end
     end
 
@@ -64,6 +69,24 @@ describe RailsInspector do
         let(:file) { files.first }
         it "can tell us its class name" do
           expect(classnames).to include("UsersController")
+        end
+        it "can tell us its spec_file" do
+          spec_file = Pathname.new("spec/dummy/spec/controllers/users_controller_spec.rb").expand_path
+          expect(specfiles).to include(spec_file)
+        end
+      end
+    end
+
+    describe "#view_files" do
+      let(:files) { subject.view_files }
+      it "contains view files" do
+        expect(basenames).to include("index.html.erb")
+      end
+      describe "a view file" do
+        let(:file) { files.first }
+        it "can tell us its spec_file" do
+          spec_file = Pathname.new("spec/dummy/spec/views/users/index.html.erb_spec.rb").expand_path
+          expect(specfiles).to include(spec_file)
         end
       end
     end

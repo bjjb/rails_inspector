@@ -36,6 +36,10 @@ class RailsInspector < Struct.new(:root)
     glob("app/controllers/*.rb").map(&:controller_file)
   end
 
+  def view_files
+    glob("app/views/**/*.{html,json,xml}.*").map(&:view_file)
+  end
+
   def glob(pattern)
     Dir.glob(root.join(pattern)).map { |f| Pathname.new(f).expand_path }
   end
@@ -49,8 +53,16 @@ class RailsInspector < Struct.new(:root)
       ControllerFile.new(self)
     end
 
+    def view_file
+      ViewFile.new(self)
+    end
+
     def class_name
       basename(extname).to_s.classify
+    end
+
+    def spec_file
+      sub('app/', 'spec/').sub(extname, '_spec.rb')
     end
   end
 
@@ -58,6 +70,12 @@ class RailsInspector < Struct.new(:root)
   end
 
   class ControllerFile < Pathname
+  end
+
+  class ViewFile < Pathname
+    def spec_file
+      sub('app/', 'spec/').sub(extname, "#{extname}_spec.rb")
+    end
   end
 
   class Pathnames < Array

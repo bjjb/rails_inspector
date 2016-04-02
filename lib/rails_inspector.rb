@@ -1,6 +1,8 @@
 require 'pathname'
 
 class RailsInspector < Struct.new(:root)
+  autoload :VERSION, "rails_inspector/version"
+
   def root
     Pathname.new(super).expand_path
   end

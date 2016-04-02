@@ -6,11 +6,13 @@ require 'rails_inspector/version'
 Gem::Specification.new do |spec|
   spec.name          = "rails_inspector"
   spec.version       = RailsInspector::VERSION
-  spec.authors       = ["Dejan Simic"]
-  spec.email         = ["desimic@gmail.com"]
+  spec.authors       = %x{git log --format=format:"%an"}.split("\n")
+  spec.email         = %x{git log --format=format:"%ae"}.split("\n")
 
-  spec.summary       = %q{Rails inspection}
-  spec.description   = %q{Rails inspection}
+  spec.summary       = %q{Library to help inspecting a Rails project}
+  spec.description   = <<-DESC
+Helps you inspect a Rails project's files, models, test-coverage, etc.
+  DESC
   spec.homepage      = "https://github.com/rails-inspector/rails_inspector"
   spec.license       = "MIT"
 
@@ -19,7 +21,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "bundler", "~> 1.11"
+  spec.add_development_dependency "rake", "~> 11.1"
+  spec.add_development_dependency "rspec", "~> 3.4"
+  spec.add_development_dependency "rails", "~> 4.2"
 end
